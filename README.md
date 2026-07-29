@@ -6,7 +6,7 @@ Site que mostra a **loja do dia do Fortnite** em português, organizada por conj
 
 ![HTML](https://img.shields.io/badge/HTML-100%25-e34f26?style=flat-square&logo=html5&logoColor=white)
 ![Netlify](https://img.shields.io/badge/deploy-Netlify-00c7b7?style=flat-square&logo=netlify&logoColor=white)
-![Licença](https://img.shields.io/badge/uso-pessoal-8b5cf6?style=flat-square)
+![Licença](https://img.shields.io/badge/licença-MIT-8b5cf6?style=flat-square)
 
 ---
 
@@ -92,4 +92,4 @@ A primeira linha da mensagem vira o **título** da release; o resto vira as **no
 
 Dados da loja e das novidades: [fortnite-api.com](https://fortnite-api.com) (API pública e gratuita da comunidade).
 
-Projeto pessoal, sem vínculo com a Epic Games. Fortnite e os nomes de itens são marcas da Epic Games, Inc. Preços exibidos em **V-Bucks**, a moeda do jogo — não em dinheiro real.
+Código sob licença [MIT](LICENSE). Projeto pessoal, sem vínculo com a Epic Games. Fortnite e os nomes de itens são marcas da Epic Games, Inc. Preços exibidos em **V-Bucks**, a moeda do jogo — não em dinheiro real.
