@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortnite — Loja e Novidades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#080c18;--card:#161f44;--card2:#0f1734;
+    --txt:#eef3ff;--muted:#93a3cf;--line:#26315e;--cyan:#38bdf8;--violet:#a78bfa;--teal:#5eead4;
+    --display:'Bebas Neue',Impact,sans-serif;
+    --head:'Chakra Petch',system-ui,sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--txt);min-height:100vh;
+    background:radial-gradient(900px 500px at 12% -8%,rgba(167,139,250,.20),transparent 60%),
+      radial-gradient(1000px 560px at 88% -6%,rgba(56,189,248,.18),transparent 60%),var(--bg1);}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 20px 40px}
+  .ic{flex:none;display:block}
+  .topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);
+    background:linear-gradient(180deg,rgba(8,12,24,.94),rgba(8,12,24,.74));border-bottom:1px solid var(--line);margin-bottom:22px}
+  .topbar .inner{max-width:1280px;margin:0 auto;padding:13px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+  .brand{font-family:var(--display);font-size:36px;line-height:1;letter-spacing:2.5px;
+    background:linear-gradient(95deg,var(--teal),var(--cyan) 28%,var(--violet) 52%,var(--cyan) 76%,var(--teal));
+    background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:flow 9s ease-in-out infinite;display:flex;align-items:center;gap:12px}
+  @keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .brand .mark{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--violet));
+    position:relative;flex:none;transform:translateY(-2px);animation:markGlow 3.4s ease-in-out infinite}
+  .brand .mark::after{content:"";position:absolute;inset:7px;border-radius:4px;background:#0b1024}
+  @keyframes markGlow{
+    0%,100%{box-shadow:0 0 14px rgba(56,189,248,.45);transform:translateY(-2px) rotate(0deg)}
+    50%{box-shadow:0 0 26px rgba(167,139,250,.75);transform:translateY(-2px) rotate(45deg)}}
+  .nav{display:flex;gap:4px;background:rgba(18,26,58,.8);border:1px solid var(--line);border-radius:13px;padding:5px}
+  .nav button{font-family:var(--display);letter-spacing:1.6px;font-size:19px;color:var(--muted);background:transparent;border:0;
+    padding:8px 20px;border-radius:9px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:8px;line-height:1}
+  .nav button:hover{color:#fff}
+  .nav button.on{color:#fff;background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 5px 16px -5px rgba(56,189,248,.7)}
+  .spacer{flex:1}
+  .pillstat{font-family:var(--head);font-weight:600;letter-spacing:.4px;font-size:12.5px;padding:6px 12px;border-radius:999px;
+    border:1px solid var(--line);color:var(--muted);display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .pillstat.live{color:#5ef0a0;border-color:#1f6b45;background:rgba(16,60,38,.5);animation:liveBreath 2.6s ease-in-out infinite}
+  .pillstat.snap{color:#ffd479;border-color:#6b5a2e;background:rgba(48,40,16,.5)}
+  .pillstat .d{width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;flex:none;position:relative}
+  .pillstat.live .d{animation:dotPulse 1.5s ease-in-out infinite}
+  .pillstat.live .d::before{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px solid currentColor;
+    animation:ring 1.9s ease-out infinite}
+  @keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.72}}
+  @keyframes ring{0%{transform:scale(.7);opacity:.85}70%{transform:scale(2.1);opacity:0}100%{opacity:0}}
+  @keyframes liveBreath{0%,100%{box-shadow:0 0 0 0 rgba(94,240,160,0)}50%{box-shadow:0 0 14px -2px rgba(94,240,160,.45)}}
+  @media(prefers-reduced-motion:reduce){.brand,.brand .mark,.pillstat.live,.pillstat.live .d,.pillstat.live .d::before{animation:none}}
+  .reset{font-family:var(--head);font-weight:700;letter-spacing:.3px;font-size:13.5px;padding:6px 13px;border-radius:999px;color:#dfe8ff;
+    background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(167,139,250,.22));border:1px solid #3a4a86;display:flex;align-items:center;gap:8px;white-space:nowrap}
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:14px}
+  .searchbox{position:relative;flex:1;min-width:220px}
+  .searchbox .sic{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.55;pointer-events:none}
+  .searchbox input{width:100%;font-family:var(--head);font-weight:500;font-size:15px;color:var(--txt);background:rgba(18,26,58,.9);
+    border:1px solid var(--line);border-radius:12px;padding:13px 14px 13px 43px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .searchbox input::placeholder{color:#6878a8}
+  .searchbox input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,189,248,.18)}
+  .pills{display:flex;gap:6px;background:rgba(18,26,58,.7);border:1px solid var(--line);border-radius:12px;padding:5px}
+  .pill{font-family:var(--head);font-weight:600;letter-spacing:.3px;font-size:13.5px;color:var(--muted);background:transparent;border:0;
+    padding:8px 14px;border-radius:9px;cursor:pointer;transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+  .pill:hover{color:#fff}
+  .pill.active{color:#fff;background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 4px 14px -4px rgba(56,189,248,.6)}
+  .refresh{font-family:var(--display);letter-spacing:1.4px;font-size:17px;color:#fff;cursor:pointer;line-height:1;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);border:1px solid #6d5bd0;border-radius:12px;padding:12px 19px;
+    display:flex;align-items:center;gap:9px;transition:.15s;box-shadow:0 6px 18px -6px rgba(124,58,237,.7)}
+  .refresh:hover{filter:brightness(1.1)}
+  .refresh .ic{transition:transform .5s}
+  .refresh:hover .ic{transform:rotate(180deg)}
+  .tfilter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+  .tchip{font-family:var(--head);font-weight:600;letter-spacing:.3px;font-size:13.5px;cursor:pointer;color:var(--muted);
+    background:rgba(18,26,58,.65);border:1px solid var(--line);border-radius:999px;padding:8px 15px;transition:.15s;display:flex;align-items:center;gap:8px}
+  .tchip:hover{color:#fff;border-color:#43518f}
+  .tchip.on{color:#fff;border-color:transparent;background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 5px 16px -6px rgba(124,58,237,.8)}
+  .tchip .n{font-size:11.5px;opacity:.8;background:rgba(0,0,0,.3);padding:1px 7px;border-radius:999px}
+  .section{margin-bottom:36px}
+  .shead{display:flex;align-items:center;gap:14px;margin:0 2px 16px}
+  .shead .bar{width:5px;height:28px;border-radius:3px;background:linear-gradient(180deg,var(--cyan),var(--violet));flex:none}
+  .shead h2{font-family:var(--display);font-size:29px;letter-spacing:1.4px;line-height:1}
+  .shead .cnt{font-family:var(--head);font-weight:600;color:var(--muted);font-size:12.5px;padding:3px 11px;border:1px solid var(--line);border-radius:999px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:18px}
+  .card{position:relative;background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;
+    overflow:hidden;transition:transform .14s,box-shadow .14s,border-color .14s;display:flex;flex-direction:column;cursor:pointer}
+  .card:hover{transform:translateY(-5px);border-color:var(--rc);box-shadow:0 16px 38px -10px var(--rc)}
+  .imgbox{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;position:relative}
+  .imgbox img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45));transition:transform .18s}
+  .card:hover .imgbox img{transform:scale(1.05)}
+  .rarband{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(0deg,var(--rc),transparent);opacity:.22}
+  .badge-r{position:absolute;top:10px;left:10px;font-family:var(--head);font-weight:700;letter-spacing:.6px;font-size:10px;text-transform:uppercase;
+    padding:3px 9px;border-radius:7px;color:#fff;background:rgba(0,0,0,.35);border:1px solid #ffffff2a;backdrop-filter:blur(3px)}
+  .playbadge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55);border:1px solid #ffffff40;color:#fff;
+    font-family:var(--head);font-weight:700;font-size:10.5px;letter-spacing:.3px;padding:4px 9px;border-radius:20px;display:flex;align-items:center;gap:5px}
+  .info{padding:12px 13px 13px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .name{font-family:var(--head);font-weight:600;font-size:15.5px;line-height:1.24}
+  .type{font-family:var(--head);font-weight:600;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px}
+  .price{margin-top:auto;display:flex;align-items:center;gap:7px;font-family:var(--display);font-size:22px;letter-spacing:.8px;padding-top:5px;line-height:1}
+  .price img{width:19px;height:19px}
+  .old{font-family:var(--head);color:#7f8bb3;text-decoration:line-through;font-size:12.5px;font-weight:500}
+  .off{margin-left:auto;font-family:var(--head);font-weight:700;background:#123a24;color:#66e79a;font-size:11.5px;padding:3px 8px;border-radius:7px;border:1px solid #2e6b46}
+  .cd{font-family:var(--head);font-weight:500;font-size:11.5px;color:#8fa0c9;display:flex;align-items:center;gap:6px}
+  .cd.soon{color:#ff9a9a}
+  .empty{color:var(--muted);text-align:center;padding:50px;font-size:15px}
+  footer{color:#6f7fab;font-size:12.5px;text-align:center;margin-top:26px;line-height:1.7}
+  .spin{display:inline-block;width:13px;height:13px;border:2px solid #43518f;border-top-color:var(--cyan);border-radius:50%;animation:sp .8s linear infinite;flex:none}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .nhero{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);margin-bottom:22px}
+  .nhero img{width:100%;display:block;aspect-ratio:16/7;object-fit:cover}
+  .nhero .cap{position:absolute;inset:auto 0 0 0;padding:24px 26px;background:linear-gradient(0deg,rgba(4,7,18,.95),rgba(4,7,18,.55) 62%,transparent)}
+  .nhero h2{font-family:var(--display);font-size:40px;letter-spacing:1.4px;line-height:1.02;margin-bottom:9px}
+  .nhero p{color:#cfd9f7;font-size:14px;line-height:1.55;max-width:760px}
+  .nlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .ncard{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    display:flex;flex-direction:column;transition:transform .14s,border-color .14s}
+  .ncard:hover{transform:translateY(-4px);border-color:#43518f}
+  .ncard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+  .ncard .nb{padding:16px 17px 18px;display:flex;flex-direction:column;gap:9px}
+  .ncard h3{font-family:var(--display);font-size:24px;letter-spacing:1px;line-height:1.05}
+  .ncard p{color:#bfcbec;font-size:13.5px;line-height:1.55}
+  .official{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+  .oflink{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:18px;letter-spacing:1.2px;line-height:1;
+    color:#fff;text-decoration:none;background:linear-gradient(135deg,#2563eb,#7c3aed);border:1px solid #6d5bd0;border-radius:12px;padding:13px 19px}
+  .oflink.alt{background:rgba(18,26,58,.8);border-color:var(--line);color:#dbe4ff}
+  .oflink:hover{filter:brightness(1.1)}
+  .overlay{position:fixed;inset:0;background:rgba(4,7,18,.85);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+  .overlay.open{display:flex}
+  .modal{background:linear-gradient(180deg,#141d42,#0c1330);border:1px solid var(--line);border-radius:22px;max-width:900px;width:100%;
+    max-height:92vh;overflow:auto;position:relative;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 30px 80px -20px #000}
+  @media(max-width:700px){.modal{grid-template-columns:1fr}}
+  .mvisual{position:relative;display:flex;align-items:center;justify-content:center;min-height:340px;padding:18px;
+    background:radial-gradient(circle at 50% 40%,var(--rcg,rgba(255,255,255,.12)),transparent 72%)}
+  .mvisual>img{max-width:100%;max-height:440px;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5));animation:float 3.6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(-7px)}50%{transform:translateY(7px)}}
+  .vwrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+  .vwrap img{max-width:100%;max-height:420px;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5));animation:float 3.6s ease-in-out infinite}
+  .vidwrap{width:100%;aspect-ratio:16/9}
+  .vidwrap iframe{width:100%;height:100%;border:0;border-radius:14px}
+  .ytbtn{display:inline-flex;align-items:center;gap:9px;background:#e23b2e;color:#fff;text-decoration:none;font-family:var(--display);
+    font-size:18px;letter-spacing:1.1px;line-height:1;padding:12px 19px;border-radius:11px;border:1px solid #ff6a5e}
+  .ytbtn:hover{filter:brightness(1.08)}
+  .ytbtn2{font-family:var(--head);color:#9fb0d8;font-size:12.5px;text-decoration:underline}
+  /* galeria de arte completa */
+  .gal{width:100%;display:flex;flex-direction:column;gap:10px;align-items:center}
+  .gal .glabel{font-family:var(--head);font-weight:600;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:#8195c4;align-self:flex-start}
+  .gal .gmain{width:100%;background:rgba(8,12,28,.55);border:1px solid var(--line);border-radius:14px;padding:10px;
+    display:flex;align-items:center;justify-content:center;min-height:150px}
+  .gal .gmain img{max-width:100%;max-height:250px;object-fit:contain;display:block}
+  .thumbs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%}
+  .thumb{width:54px;height:54px;border-radius:10px;border:1px solid var(--line);background:rgba(8,12,28,.6);cursor:pointer;
+    padding:3px;transition:.14s;overflow:hidden;flex:none}
+  .thumb img{width:100%;height:100%;object-fit:contain;display:block}
+  .thumb:hover{border-color:#5b6bb8}
+  .thumb.on{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(56,189,248,.28)}
+  .styles{width:100%;display:flex;flex-direction:column;gap:8px}
+  .stlist{display:flex;flex-wrap:wrap;gap:9px}
+  .st{display:flex;align-items:center;gap:7px;background:rgba(18,26,58,.7);border:1px solid var(--line);border-radius:10px;
+    padding:5px 10px 5px 5px;cursor:pointer;transition:.14s}
+  .st:hover{border-color:#5b6bb8}
+  .st img{width:30px;height:30px;object-fit:contain;border-radius:6px;flex:none}
+  .st span{font-family:var(--head);font-weight:600;font-size:12px;color:#cfd9f7}
+  .mbody{padding:24px 24px 26px;display:flex;flex-direction:column;gap:13px}
+  .mbody h3{font-family:var(--display);font-size:34px;letter-spacing:1.2px;line-height:1.02}
+  .mbody .msub{font-family:var(--head);color:var(--muted);font-size:13px;margin-top:-6px}
+  .mrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .chip{font-family:var(--head);font-weight:600;font-size:12.5px;letter-spacing:.3px;padding:4px 11px;border-radius:8px;border:1px solid var(--line);color:var(--muted)}
+  .mprice{display:flex;align-items:center;gap:9px;font-family:var(--display);font-size:30px;letter-spacing:1px;line-height:1}
+  .mprice img{width:25px;height:25px}
+  .mdesc{color:#c3cff0;font-size:13.5px;line-height:1.55}
+  .mexp{font-family:var(--head);background:rgba(12,18,44,.8);border:1px solid var(--line);border-radius:13px;padding:11px 13px;font-size:13px;
+    display:flex;align-items:center;gap:9px}
+  .mexp b{color:#eef3ff}
+  .note{font-size:12.5px;color:#8fa0c9}
+  .close{position:absolute;top:14px;right:16px;z-index:2;background:rgba(0,0,0,.55);border:1px solid #ffffff33;color:#fff;
+    width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .close:hover{background:rgba(0,0,0,.85)}
+  .hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <div class="brand"><span class="mark"></span> Fortnite</div>
+  <nav class="nav" id="nav">
+    <button class="on" data-view="loja"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h2.2l2.4 11.2A2 2 0 0 0 8.6 16h9.6a2 2 0 0 0 2-1.6L22 7H5"/></svg> Loja</button>
+    <button data-view="news"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h12a1 1 0 0 1 1 1v12H5a1 1 0 0 1-1-1z"/><path d="M17 8h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2"/><path d="M7 8.5h6M7 11.5h6M7 14.5h4"/></svg> Novidades</button>
+  </nav>
+  <div class="spacer"></div>
+  <span id="reset" class="reset"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span id="resetTxt">Nova loja em —</span></span>
+  <span id="status" class="pillstat"><span class="spin"></span> carregando…</span>
+</div></div>
+
+<div class="wrap">
+  <div id="view-loja">
+    <div class="controls">
+      <div class="searchbox">
+        <svg class="ic sic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93a3cf" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Buscar skin, gesto, conjunto…">
+      </div>
+      <div class="pills" id="pills">
+        <button class="pill active" data-sort="destaque">Ordem da loja</button>
+        <button class="pill" data-sort="preco-desc">Maior preço</button>
+        <button class="pill" data-sort="preco-asc">Menor preço</button>
+        <button class="pill" data-sort="nome">A–Z</button>
+      </div>
+      <button id="reload" class="refresh">
+        <svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        Atualizar
+      </button>
+    </div>
+    <div class="tfilter" id="tfilter"></div>
+    <div id="sub" class="note" style="margin:-8px 2px 18px"></div>
+    <div id="board"></div>
+  </div>
+
+  <div id="view-news" class="hide">
+    <div id="newsBoard"></div>
+    <div class="official">
+      <a class="oflink" href="https://www.fortnite.com/news?lang=pt-BR" target="_blank" rel="noopener"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4M9 12h6M9 16h5"/></svg> Notas de atualização</a>
+      <a class="oflink alt" href="https://www.fortnite.com/competitive/news?lang=pt-BR" target="_blank" rel="noopener"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5H5.6A2.4 2.4 0 0 0 8 9.4M16 5h2.4A2.4 2.4 0 0 1 16 9.4"/><path d="M12 13.5V17M9 20h6"/></svg> Competitivo</a>
+    </div>
+    <div class="note" style="margin-top:14px">Feed oficial do jogo (o mesmo da tela de novidades do Fortnite), em português. Para o texto completo do patch, use o botão das notas de atualização.</div>
+  </div>
+
+  <footer>
+    Dados: fortnite-api.com · preços em V-Bucks (moeda do jogo) · loja organizada por conjuntos, como no jogo.<br>
+    Clique numa skin pra ver o preview e a prévia animada (showcase).
+  </footer>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal">
+  <button class="close" id="close"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="mvisual" id="mvisual"></div>
+  <div class="mbody" id="mbody"></div>
+</div></div>
+
+<script>
+const SNAPSHOT = {"date": "2026-07-29T00:00:00Z", "count": 36, "items": [{"section": "iShowSpeed", "sIndex": 8, "title": "Quebrando Recordes", "subtitle": "", "price": 500, "regularPrice": 500, "rarity": "icon", "type": "emote", "image": "https://fortnite-api.com/images/cosmetics/br/eid_honorbraceleap/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/eid_honorbraceleap/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/13a22e378742ed97/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto IShowSpeed", "outDate": "2026-07-29T23:59:59.999Z", "video": "", "desc": "Receba mais curtidas do que nunca."}, {"section": "Músicas", "sIndex": 26, "title": "Taste", "subtitle": "Sabrina Carpenter", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/068e44c615e9e4e3.jpg", "featured": "https://cdn.fortnite-api.com/tracks/068e44c615e9e4e3.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Bob Esponja Calça Quadrada", "sIndex": 6, "title": "A Espátula Dourada", "subtitle": "", "price": 500, "regularPrice": 500, "rarity": "rare", "type": "pickaxe", "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_countyfrog/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_countyfrog/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6d526624567bcdf7/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto Bob Esponja Calça Quadrada", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Espátula digna de mestre-cuca do rei!"}, {"section": "Músicas", "sIndex": 26, "title": "All The Stars", "subtitle": "Kendrick Lamar ft. SZA", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/9355953c94d6dc99.jpg", "featured": "https://cdn.fortnite-api.com/tracks/9355953c94d6dc99.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-06T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Ben 10", "sIndex": 12, "title": "Ben Tennyson", "subtitle": "", "price": 2000, "regularPrice": 2000, "rarity": "epic", "type": "outfit", "image": "https://fortnite-api.com/images/cosmetics/br/character_biomehose/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/character_biomehose/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/256832804691668d/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/256832804691668d/renderimage_1.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/256832804691668d/renderimage_2.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/256832804691668d/renderimage_3.png"], "styles": [{"name": "Ben Tennyson", "image": "https://fortnite-api.com/images/cosmetics/br/character_biomehose/variants/parts/stage1.png"}, {"name": "Chama", "image": "https://fortnite-api.com/images/cosmetics/br/character_biomehose/variants/parts/stage2.png"}, {"name": "Alien X", "image": "https://fortnite-api.com/images/cosmetics/br/character_biomehose/variants/parts/stage3.png"}], "setText": "Parte do conjunto Ben 10", "outDate": "2026-08-01T23:59:59.999Z", "video": "gRMJMzDu6Y8", "desc": "Tá na hora de virar herói."}, {"section": "Bob Esponja Calça Quadrada", "sIndex": 6, "title": "Especial do K-BLUB", "subtitle": "", "price": 800, "regularPrice": 800, "rarity": "rare", "type": "backpack", "image": "https://fortnite-api.com/images/cosmetics/br/backpack_gainsneeze_mic/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_gainsneeze_mic/featured.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/1e5c538d9e23a55c/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/1e5c538d9e23a55c/renderimage_1.png"], "styles": [{"name": "Cel", "image": "https://fortnite-api.com/images/cosmetics/br/backpack_gainsneeze_mic/variants/particle/particle1.png"}, {"name": "Gradiente", "image": "https://fortnite-api.com/images/cosmetics/br/backpack_gainsneeze_mic/variants/particle/particle2.png"}], "setText": "Parte do conjunto Bob Esponja Calça Quadrada", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Cante uma canção do Patrick."}, {"section": "Batférias de Verão", "sIndex": 5, "title": "Taco Inflável da Arlequina", "subtitle": "", "price": 500, "regularPrice": 500, "rarity": "rare", "type": "pickaxe", "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_humorshale/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_humorshale/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/917aa7e125549189/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto Verão em Gotham City", "outDate": "2026-07-29T23:59:59.999Z", "video": "", "desc": "Para usar na água."}, {"section": "Músicas Chi-Town", "sIndex": 9, "title": "I Think I'm OKAY", "subtitle": "mgk, YUNGBLUD & Travis Barker", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/cc41895d24175a1c.jpg", "featured": "https://cdn.fortnite-api.com/tracks/cc41895d24175a1c.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "redrum", "subtitle": "21 Savage", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/c991500b51cbd325.jpg", "featured": "https://cdn.fortnite-api.com/tracks/c991500b51cbd325.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "M@GICAL☆CURE! LOVE SHOT!", "subtitle": "SAWTOWNE ft. Hatsune Miku", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/907d65e6c42faa34.jpg", "featured": "https://cdn.fortnite-api.com/tracks/907d65e6c42faa34.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Outros", "sIndex": 999, "title": "Racha-cuca Ursina", "subtitle": "", "price": 300, "regularPrice": 300, "rarity": "uncommon", "type": "backpack", "image": "https://fortnite-api.com/images/cosmetics/br/bid_393_ghoultrooper/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/bid_393_ghoultrooper/icon.png", "renders": [], "styles": [], "setText": "", "outDate": "2026-07-30T23:59:59.999Z", "video": "", "desc": "Perdeu a fofura."}, {"section": "Músicas", "sIndex": 26, "title": "2055", "subtitle": "Sleepy Hallow", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/73d47fa1b8b6ae05.jpg", "featured": "https://cdn.fortnite-api.com/tracks/73d47fa1b8b6ae05.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Novidade na Área", "sIndex": 2, "title": "Toca-Discos KATS", "subtitle": "", "price": 400, "regularPrice": 400, "rarity": "rare", "type": "backpack", "image": "https://fortnite-api.com/images/cosmetics/br/backpack_gothclaws/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_gothclaws/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/62333d8cbaaef3f2/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto Excursão na Ilha de KATS", "outDate": "2026-07-29T23:59:59.999Z", "video": "", "desc": "Toque os clássicos onde estiver."}, {"section": "Bob Esponja Calça Quadrada", "sIndex": 6, "title": "Crocs Classic Clog SpongeBob 'Patrick'", "subtitle": "", "price": 1000, "regularPrice": 1000, "rarity": "uncommon", "type": "shoe", "image": "https://fortnite-api.com/images/cosmetics/br/shoes_niftygrateboil/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/shoes_niftygrateboil/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/669d8a03aa46fa85/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/669d8a03aa46fa85/renderimage_1.png"], "styles": [{"name": "modo esporte", "image": "https://fortnite-api.com/images/cosmetics/br/shoes_niftygrateboil/variants/material/mat1.png"}, {"name": "modo tranquilo", "image": "https://fortnite-api.com/images/cosmetics/br/shoes_niftygrateboil/variants/material/mat2.png"}], "setText": "Parte do conjunto Sapatos Crocs", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Pisa mais."}, {"section": "Músicas", "sIndex": 26, "title": "Mary on a Cross", "subtitle": "Ghost", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/180fc2449fde9e36.jpg", "featured": "https://cdn.fortnite-api.com/tracks/180fc2449fde9e36.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-06T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Batférias de Verão", "sIndex": 5, "title": "Carnívoras Calorentas", "subtitle": "", "price": 800, "regularPrice": 800, "rarity": "dc", "type": "backpack", "image": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6353c889cdabcac7/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto Verão em Gotham City", "outDate": "2026-07-29T23:59:59.999Z", "video": "", "desc": "As moscas que se cuidem."}, {"section": "Bob Esponja Calça Quadrada", "sIndex": 6, "title": "Pacotão Bob Esponja Calça Quadrada", "subtitle": "", "price": 3000, "regularPrice": 7800, "rarity": "uncommon", "type": "sidekick", "image": "https://fortnite-api.com/images/cosmetics/br/companion_wittystork/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/companion_wittystork/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/0e5ccfe8a9f9269c/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/0e5ccfe8a9f9269c/renderimage_1.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/0e5ccfe8a9f9269c/renderimage_2.png"], "styles": [], "setText": "Parte do conjunto Bob Esponja Calça Quadrada", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Ele vive num abacaxi e mora no mar."}, {"section": "Músicas Chi-Town", "sIndex": 9, "title": "Mantra", "subtitle": "", "price": 500, "regularPrice": 500, "rarity": "icon", "type": "emote", "image": "https://fortnite-api.com/images/cosmetics/br/eid_meditation/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/eid_meditation/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/0c923e408d2aeb10/renderimage_0.png"], "styles": [], "setText": "", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Dance o mantra da beleza."}, {"section": "iShowSpeed", "sIndex": 8, "title": "SuperSpeed", "subtitle": "", "price": 1200, "regularPrice": 1200, "rarity": "icon", "type": "outfit", "image": "https://fortnite-api.com/images/cosmetics/br/character_honorbraceleap/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/character_honorbraceleap/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/255b2ac3ed4fa793/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/255b2ac3ed4fa793/renderimage_1.png"], "styles": [{"name": "Com", "image": "https://fortnite-api.com/images/cosmetics/br/character_honorbraceleap/variants/particle/particle1.png"}, {"name": "Sem", "image": "https://fortnite-api.com/images/cosmetics/br/character_honorbraceleap/variants/particle/particle2.png"}], "setText": "Parte do conjunto IShowSpeed", "outDate": "2026-07-29T23:59:59.999Z", "video": "", "desc": "Velocidade, é Super."}, {"section": "Abraços e Caos", "sIndex": 10, "title": "Miau do Amor", "subtitle": "", "price": 1200, "regularPrice": 1200, "rarity": "uncommon", "type": "sidekick", "image": "https://fortnite-api.com/images/cosmetics/br/companion_fondcuddles/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/companion_fondcuddles/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6b73da5663e61050/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6b73da5663e61050/renderimage_1.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6b73da5663e61050/renderimage_2.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6b73da5663e61050/renderimage_3.png"], "styles": [], "setText": "Parte do conjunto Coração Felino", "outDate": "2026-08-04T23:59:59.999Z", "video": "", "desc": "Muita miau-ravilhosidade."}, {"section": "Músicas", "sIndex": 26, "title": "tv off", "subtitle": "Kendrick Lamar ft. Lefty Gunplay", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/136d56f2faca9575.jpg", "featured": "https://cdn.fortnite-api.com/tracks/136d56f2faca9575.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "good 4 u", "subtitle": "Olivia Rodrigo", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/9674ac61a37e9f52.jpg", "featured": "https://cdn.fortnite-api.com/tracks/9674ac61a37e9f52.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-07-30T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Bob Esponja Calça Quadrada", "sIndex": 6, "title": "Patrick Estrela", "subtitle": "", "price": 1800, "regularPrice": 1800, "rarity": "uncommon", "type": "sidekick", "image": "https://fortnite-api.com/images/cosmetics/br/companion_spendplume/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/companion_spendplume/featured.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/9d2d536756511ba2/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/9d2d536756511ba2/renderimage_1.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/9d2d536756511ba2/renderimage_2.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/9d2d536756511ba2/renderimage_3.png"], "styles": [], "setText": "Parte do conjunto Bob Esponja Calça Quadrada", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Não, aqui é o Patrick."}, {"section": "Batférias de Verão", "sIndex": 5, "title": "Hora de Surfar!", "subtitle": "", "price": 500, "regularPrice": 500, "rarity": "uncommon", "type": "emote", "image": "https://fortnite-api.com/images/cosmetics/br/eid_tidecompost/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/eid_tidecompost/featured.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6134c46822fd3943/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto Verão em Gotham City", "outDate": "2026-07-29T23:59:59.999Z", "video": "OhKAkWDP4dU", "desc": "Macacos me mordam, Batman!"}, {"section": "Músicas Chi-Town", "sIndex": 9, "title": "Pega o Pique", "subtitle": "", "price": 500, "regularPrice": 500, "rarity": "icon", "type": "emote", "image": "https://fortnite-api.com/images/cosmetics/br/eid_thrash/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/eid_thrash/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/4073b784298738f1/renderimage_0.png"], "styles": [], "setText": "", "outDate": "2026-08-02T23:59:59.999Z", "video": "AcBj5NTU-IE", "desc": "Faz melhor?"}, {"section": "Músicas", "sIndex": 26, "title": "Walk Em Down", "subtitle": "NLE Choppa ft. Roddy Ricch", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/babced788621c114.jpg", "featured": "https://cdn.fortnite-api.com/tracks/babced788621c114.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "Bed Chem", "subtitle": "Sabrina Carpenter", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/9ef6061fff0b9ca5.jpg", "featured": "https://cdn.fortnite-api.com/tracks/9ef6061fff0b9ca5.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "Take On Me", "subtitle": "a-ha", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/efd4f456f4ccf8c1.jpg", "featured": "https://cdn.fortnite-api.com/tracks/efd4f456f4ccf8c1.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "Robbery", "subtitle": "Juice WRLD", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/4ef3de329037e668.jpg", "featured": "https://cdn.fortnite-api.com/tracks/4ef3de329037e668.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "X Gon' Give It To Ya", "subtitle": "DMX", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/3509e861ec569adc.jpg", "featured": "https://cdn.fortnite-api.com/tracks/3509e861ec569adc.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-06T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "Decade", "subtitle": "Dixie Flatline ft. Hatsune Miku", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/10e32c187517e51c.jpg", "featured": "https://cdn.fortnite-api.com/tracks/10e32c187517e51c.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Músicas", "sIndex": 26, "title": "Livin' La Vida Loca", "subtitle": "Ricky Martin", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/e4d4e2f508e32295.jpg", "featured": "https://cdn.fortnite-api.com/tracks/e4d4e2f508e32295.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}, {"section": "Bob Esponja Calça Quadrada", "sIndex": 6, "title": "Bob Esponja Calça Quadrada", "subtitle": "", "price": 1800, "regularPrice": 1800, "rarity": "uncommon", "type": "sidekick", "image": "https://fortnite-api.com/images/cosmetics/br/companion_wittystork/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/companion_wittystork/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6ac05182eddcb7a4/renderimage_0.png", "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6ac05182eddcb7a4/renderimage_1.png"], "styles": [], "setText": "Parte do conjunto Bob Esponja Calça Quadrada", "outDate": "2026-08-02T23:59:59.999Z", "video": "", "desc": "Ele vive num abacaxi e mora no mar."}, {"section": "Novidade na Área", "sIndex": 2, "title": "Rei", "subtitle": "", "price": 300, "regularPrice": 300, "rarity": "rare", "type": "backpack", "image": "https://fortnite-api.com/images/cosmetics/br/backpack_mattedecoy/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_mattedecoy/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/7cc0b95228724b59/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto Reino do Xadrez", "outDate": "2026-07-31T23:59:59.999Z", "video": "", "desc": "Fique longe do xeque-mate."}, {"section": "iShowSpeed", "sIndex": 8, "title": "Emblema SuperSpeed", "subtitle": "", "price": 800, "regularPrice": 800, "rarity": "icon", "type": "pickaxe", "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_honorbraceleap/icon.png", "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_honorbraceleap/icon.png", "renders": ["https://fortnite-api.com/images/cosmetics/br/newdisplayassets/fb1ca756446c3424/renderimage_0.png"], "styles": [], "setText": "Parte do conjunto IShowSpeed", "outDate": "2026-07-29T23:59:59.999Z", "video": "", "desc": "Continue Super."}, {"section": "Músicas", "sIndex": 26, "title": "Carry on Wayward Son", "subtitle": "Kansas", "price": 500, "regularPrice": 500, "rarity": "common", "type": "song", "image": "https://cdn.fortnite-api.com/tracks/7636eb5b1a4a26f5.jpg", "featured": "https://cdn.fortnite-api.com/tracks/7636eb5b1a4a26f5.jpg", "renders": [], "styles": [], "setText": "", "outDate": "2026-08-01T23:59:59.999Z", "video": "", "desc": ""}]};
+const NEWS_SNAP = {"date": "2026-07-29T14:38:29Z", "items": [{"title": "Fortnite: No Corre Chegou!", "body": "Extrair. Sobreviver. Repetir! Escolha um Elemental antes de cada partida para obter seu Poder e resgate mais deles durante as partidas para montar sua Coleção. Revolucione sua movimentação com o Deslizador dos Sete, dispare projéteis detonáveis com o Rifle Explosivo do Caos e muito mais!", "image": "https://cdn-live.prm.ol.epicgames.com/prod/65e934f81dbe4e1c88dd39a96f380f03.jpeg?width=1920&height=1080&aspect=fill", "tile": "https://cdn-live.prm.ol.epicgames.com/prod/0c1d8ebcb2e94e8c89789b2e6039edbe.jpeg?width=720&height=400&aspect=fill"}, {"title": "Garanta a Vitória com Elementais!", "body": "Equipe um Elemental antes de cada partida para ter seu Poder único, como rastreamento de ameaças ou regeneração de escudo. Suba o nível deles com eliminações, abrindo baús e reanimando colegas de equipe para ter efeitos mais fortes, e garanta novos Elementais em Locais de Extração para aumentar sua Coleção!", "image": "https://cdn-live.prm.ol.epicgames.com/prod/73f4bb54261244f6a37e27086c9c9992.jpeg?width=1920&height=1080&aspect=fill", "tile": "https://cdn-live.prm.ol.epicgames.com/prod/51f4c6b6b6224c58a964410cfdac49f7.jpeg?width=720&height=400&aspect=fill"}, {"title": "Equipe-se para a Corrida!", "body": "Surpreenda seus oponentes com o Deslizador dos Sete, que desbloqueia deslizamentos em alta velocidade com câmera lenta e precisão aumentada ao mirar durante o trajeto. Domine novas armas, como o Rifle Explosivo do Caos com projéteis que detonam no contato, a Espingarda de Foco Extendido para eliminações de perto e muito mais!", "image": "https://cdn-live.prm.ol.epicgames.com/prod/120944260e304a5db1050b1fe497fa32.jpeg?width=1920&height=1080&aspect=fill", "tile": "https://cdn-live.prm.ol.epicgames.com/prod/a094c521ef6f43c19585eec0f6e06e45.jpeg?width=720&height=400&aspect=fill"}, {"title": "Baba Yaga Entra em Cena", "body": "O assassino implacável entrou na luta. Derrote inimigos com a precisão e o estilo característicos do John Wick. Quem tem o Passe de Batalha pode desbloquear o Traje John Wick e resgatar o cachorro dele no Battle Royale para ganhar um Mascote!", "image": "https://cdn-live.prm.ol.epicgames.com/prod/578f49980eca41e68aeb590b5cd58907.jpeg?width=1920&height=1080&aspect=fill", "tile": "https://cdn-live.prm.ol.epicgames.com/prod/6e94395eace14e55aca4cdfd10c39c02.jpeg?width=720&height=400&aspect=fill"}, {"title": "Novos Elementais Chegam à Ilha na Quinta-feira", "body": "Elementais Embananado e Lhama a caminho! O Elemental Lhama do Saque concede uma chance de obter aprimoramentos de armas em caixas de munição, enquanto o Embananado Bisbilhoteiro marca Elementais raros próximos, mas revela sua localização.", "image": "https://cdn-live.prm.ol.epicgames.com/prod/73719ffcaf454a2a92d3d3a2af2bffc7.jpeg?width=1920&height=1080&aspect=fill", "tile": "https://cdn-live.prm.ol.epicgames.com/prod/bf6be8b7fea64f67b457ba2568520d32.jpeg?width=720&height=400&aspect=fill"}]};
+
+/* ---------- ícones vetoriais ---------- */
+const IC={
+  all:'<path d="M12 3.6l2.15 5.05 5.45.45-4.15 3.6 1.25 5.3L12 15.2l-4.7 2.8 1.25-5.3L4.4 9.1l5.45-.45z"/>',
+  play:'<path d="M8 5.4v13.2L19 12z"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  outfit:'<circle cx="12" cy="7.6" r="3.6"/><path d="M5 21c0-4 3.2-6.6 7-6.6s7 2.6 7 6.6"/>',
+  emote:'<circle cx="13.5" cy="4.6" r="2"/><path d="M13.5 7v5l3 3.4M13.5 12l-3.4 3.4L7.5 21M16.6 10.2 20 8.6M10 9.2 6.4 11"/>',
+  pickaxe:'<path d="M13.6 10.4 4 20"/><path d="M11 7c2.5-2.5 6.4-3 8.9-1-2 2.5-1.5 6.4 1 8.9-2.5 2-6.4 1.5-8.9-1"/>',
+  backpack:'<path d="M7 8.4a5 5 0 0 1 10 0V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M10 8.4V6.2a2 2 0 0 1 4 0v2.2M9.6 14.2h4.8"/>',
+  glider:'<path d="M12 21V9.4"/><path d="M3.2 9.4h17.6L16.4 15H7.6z"/><path d="M3.2 9.4 7.6 4h8.8l4.4 5.4"/>',
+  wrap:'<circle cx="12" cy="12" r="8.5"/><circle cx="9.2" cy="9.8" r="1.15"/><circle cx="14.6" cy="9.4" r="1.15"/><circle cx="10" cy="15" r="1.15"/>',
+  shoe:'<path d="M3 16h11l3-3 4 1.6V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 16v-5l4 1 2 3"/>',
+  paw:'<circle cx="7.8" cy="9.2" r="1.75"/><circle cx="12" cy="7.2" r="1.75"/><circle cx="16.2" cy="9.2" r="1.75"/><path d="M12 12.2c3 0 5 2 5 4.4S15 20 12 20s-5-1-5-3.4 2-4.4 5-4.4z"/>',
+  image:'<rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.4"/><path d="m4 17 5-4 4 3 3-2 4 3"/>',
+  music:'<circle cx="7" cy="17.4" r="2.5"/><circle cx="17" cy="15.4" r="2.5"/><path d="M9.5 17.4V7l10-2v10.4"/>',
+  bundle:'<path d="m12 3 8.5 4.5v9L12 21l-8.5-4.5v-9z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/>',
+  medal:'<circle cx="12" cy="14.6" r="4.4"/><path d="m8 3 2.6 5.2M16 3l-2.6 5.2"/>',
+  smile:'<circle cx="12" cy="12" r="8.5"/><path d="M8.6 14.4s1.3 2 3.4 2 3.4-2 3.4-2"/><circle cx="9.5" cy="10" r="1"/><circle cx="14.5" cy="10" r="1"/>',
+  spark:'<path d="M12 4v6M12 14v6M4 12h6M14 12h6"/>',
+  mask:'<path d="M4 7h16v5a8 8 0 0 1-16 0z"/><circle cx="9" cy="11" r="1.15"/><circle cx="15" cy="11" r="1.15"/>'
+};
+function ico(k,size,filled){
+  const p=IC[k]||IC.spark,s=size||15;
+  return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="${filled?"currentColor":"none"}" stroke="${filled?"none":"currentColor"}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+}
+
+const RCOL={common:"#9aa4b0",uncommon:"#4ade80",rare:"#38bdf8",epic:"#c084fc",legendary:"#fb923c",mythic:"#facc15",
+  icon:"#22d3ee",marvel:"#ef4444",dc:"#3b82f6",dark:"#c026d3",lava:"#f97316",frozen:"#7dd3fc",shadow:"#6b7280",
+  slurp:"#06b6d4",gaming:"#6366f1",starwars:"#e5e7eb",star_wars:"#e5e7eb"};
+const RLABEL={common:"Comum",uncommon:"Incomum",rare:"Raro",epic:"Épico",legendary:"Lendário",mythic:"Mítico",
+  icon:"Série Ícone",marvel:"Marvel",dc:"DC",dark:"Série Sombria",lava:"Série Lava",frozen:"Série Congelada",
+  shadow:"Série Sombra",slurp:"Série Gosma",gaming:"Lendas dos Games",starwars:"Star Wars",star_wars:"Star Wars"};
+const TLABEL={outfit:"Skins",backpack:"Mochilas",pickaxe:"Picaretas",emote:"Gestos",glider:"Asas-delta",wrap:"Envelopamentos",
+  shoe:"Tênis",sidekick:"Ajudantes",petcarrier:"Ajudantes",loadingscreen:"Telas",music:"Músicas",song:"Músicas",
+  bundle:"Pacotes",spray:"Sprays",banner:"Emblemas",emoji:"Emojis",contrail:"Rastros",cosmeticvarianttoken:"Estilos"};
+const TSING={outfit:"Skin",backpack:"Mochila",pickaxe:"Picareta",emote:"Gesto",glider:"Asa-delta",wrap:"Envelopamento",
+  shoe:"Tênis",sidekick:"Ajudante",petcarrier:"Ajudante",loadingscreen:"Tela",music:"Música",song:"Faixa",
+  bundle:"Pacote",spray:"Spray",banner:"Emblema",emoji:"Emoji",contrail:"Rastro",cosmeticvarianttoken:"Estilo"};
+const TICO={outfit:"outfit",backpack:"backpack",pickaxe:"pickaxe",emote:"emote",glider:"glider",wrap:"wrap",shoe:"shoe",
+  sidekick:"paw",petcarrier:"paw",loadingscreen:"image",music:"music",song:"music",bundle:"bundle",spray:"wrap",
+  banner:"medal",emoji:"smile",contrail:"spark",cosmeticvarianttoken:"mask"};
+
+let CURRENT=[],SORT="destaque",TYPE="all",VIEW="loja";
+
+function extractCards(data){
+  const entries=(data&&data.data&&data.data.entries)||[];const out=[];
+  for(const e of entries){
+    let items=[];
+    for(const k of ["brItems","tracks","instruments","cars","legoKits"]) if(Array.isArray(e[k])) items=items.concat(e[k]);
+    const b=e.bundle||{},p=items[0]||{},L=e.layout||{};
+    let icon="",feat="";
+    for(const it of items){const im=it.images||{};icon=im.icon||im.smallIcon||im.small||it.albumArt||"";feat=im.featured||icon;if(icon)break;}
+    if(!icon&&b.image){icon=feat=b.image;}
+    if(!icon){const m=JSON.stringify(e).match(/https:\/\/[^"\\]+?\.png/g);if(m){const f=m.find(u=>!u.includes("vbuck")&&!u.includes("/shop"));if(f){icon=feat=f;}}}
+    const isTrack=!!(p.title&&(p.albumArt||p.artist));
+    const title=b.name||p.name||p.title||e.devName||"Item";
+    const type=(p.type&&p.type.value)||(isTrack?"song":(b.name?"bundle":""));
+    /* artes completas + estilos alternativos */
+    const nda=e.newDisplayAsset||{};
+    const renders=[];
+    for(const r of (nda.renderImages||[])) if(r&&r.image) renders.push(r.image);
+    for(const mi of (nda.materialInstances||[])){
+      const im=mi.images||{};
+      for(const k in im){const v=im[k];if(typeof v==="string"&&v.startsWith("http")&&renders.indexOf(v)<0)renders.push(v);}
+    }
+    const styles=[];
+    for(const va of (p.variants||[])) for(const op of (va.options||[])) if(op&&op.image) styles.push({name:op.name||"",image:op.image});
+    if(icon&&title) out.push({section:L.name||"Outros",sIndex:(L.index!=null?L.index:999),
+      title,subtitle:isTrack?(p.artist||""):"",price:e.finalPrice,regularPrice:e.regularPrice,
+      rarity:(p.rarity&&p.rarity.value)||"common",type,image:icon,featured:feat,
+      renders:renders.slice(0,5),styles:styles.slice(0,8),
+      setText:(p.set&&p.set.text)||"",outDate:e.outDate||"",video:p.showcaseVideo||"",desc:p.description||""});
+  }
+  return out;
+}
+function extractNews(data){
+  const m=(data&&data.data&&data.data.motds)||[];
+  return m.filter(x=>!x.hidden).map(x=>({title:x.title||x.tabTitle||"",body:x.body||"",image:x.image||x.tileImage||"",tile:x.tileImage||x.image||""}));
+}
+const fmt=n=>n==null?"?":Number(n).toLocaleString("pt-BR");
+function outParts(iso){
+  if(!iso)return null;
+  const out=new Date(iso),now=new Date(),diff=out-now;
+  const dateStr=out.toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+  if(diff<=0)return{dateStr,rel:"encerrado",soon:true};
+  const d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),mi=Math.floor(diff%36e5/6e4);
+  return{dateStr,rel:d>0?`sai em ${d}d ${h}h`:(h>0?`sai em ${h}h ${mi}min`:`sai em ${mi}min`),soon:diff<864e5};
+}
+function resetCountdown(){
+  const n=new Date(),r=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()+1,0,0,0));
+  const diff=r-n,h=Math.floor(diff/36e5),m=Math.floor(diff%36e5/6e4);
+  const el=document.getElementById("resetTxt");if(el)el.textContent=`Nova loja em ${h}h ${m}min`;
+}
+function buildTypeFilter(){
+  const counts={};
+  for(const c of CURRENT){const k=c.type||"outros";counts[k]=(counts[k]||0)+1;}
+  const order=["outfit","emote","pickaxe","backpack","glider","wrap","shoe","sidekick","petcarrier","bundle","song","music"];
+  const keys=Object.keys(counts).sort((a,b)=>{
+    const ia=order.indexOf(a),ib=order.indexOf(b);
+    if(ia!==-1&&ib!==-1)return ia-ib;
+    if(ia!==-1)return -1;if(ib!==-1)return 1;
+    return counts[b]-counts[a];
+  });
+  let html=`<button class="tchip ${TYPE==="all"?"on":""}" data-t="all">${ico("all",14,true)} Tudo <span class="n">${CURRENT.length}</span></button>`;
+  for(const k of keys){
+    html+=`<button class="tchip ${TYPE===k?"on":""}" data-t="${k}">${ico(TICO[k]||"spark",15)} ${TLABEL[k]||k} <span class="n">${counts[k]}</span></button>`;
+  }
+  document.getElementById("tfilter").innerHTML=html;
+}
+function cardHTML(c){
+  const col=RCOL[c.rarity]||RCOL.common,tl=TSING[c.type]||(c.type||"Item");
+  const disc=(c.regularPrice&&c.price&&c.regularPrice>c.price)?`<span class="old">${fmt(c.regularPrice)}</span><span class="off">-${Math.round((1-c.price/c.regularPrice)*100)}%</span>`:"";
+  const op=outParts(c.outDate),cd=op?`<div class="cd ${op.soon?"soon":""}" data-out="${c.outDate}">${ico("clock",13)} ${op.rel}</div>`:"";
+  const play=c.video?`<span class="playbadge">${ico("play",10,true)} prévia</span>`:"";
+  return `<div class="card" style="--rc:${col}" onclick="openModal(${c.uid})">
+    <div class="imgbox" style="background:radial-gradient(circle at 50% 40%, ${col}44, ${col}12 58%, transparent 74%)">
+      <div class="rarband"></div>${play}
+      <span class="badge-r" style="background:${col}cc">${RLABEL[c.rarity]||c.rarity}</span>
+      <img loading="lazy" src="${c.image}" alt="${c.title}" onerror="this.style.opacity=.25">
+    </div>
+    <div class="info">
+      <div class="name">${c.title}</div>
+      <div class="type">${tl}</div>
+      <div class="price"><img src="https://fortnite-api.com/images/vbuck.png" alt="V-Bucks">${fmt(c.price)} ${disc}</div>
+      ${cd}
+    </div></div>`;
+}
+function render(){
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  let list=CURRENT.filter(c=>(TYPE==="all"||c.type===TYPE)&&
+    (c.title.toLowerCase().includes(q)||(c.setText||"").toLowerCase().includes(q)||(c.section||"").toLowerCase().includes(q)));
+  const groups=new Map();
+  for(const c of list){const key=c.sIndex+"||"+c.section;if(!groups.has(key))groups.set(key,{sIndex:c.sIndex,name:c.section,items:[]});groups.get(key).items.push(c);}
+  const secs=[...groups.values()].sort((a,b)=>a.sIndex-b.sIndex);
+  const sorter={"preco-desc":(a,b)=>(b.price||0)-(a.price||0),"preco-asc":(a,b)=>(a.price||0)-(b.price||0),"nome":(a,b)=>a.title.localeCompare(b.title,"pt-BR")}[SORT];
+  const board=document.getElementById("board");
+  if(!secs.length){board.innerHTML='<div class="empty">Nenhum item encontrado com esse filtro.</div>';return;}
+  board.innerHTML=secs.map(s=>{
+    const items=s.items.slice();if(sorter)items.sort(sorter);
+    return `<div class="section"><div class="shead"><span class="bar"></span><h2>${s.name}</h2><span class="cnt">${items.length} ${items.length==1?"item":"itens"}</span></div>
+      <div class="grid">${items.map(cardHTML).join("")}</div></div>`;
+  }).join("");
+}
+function renderNews(items){
+  const b=document.getElementById("newsBoard");
+  if(!items||!items.length){b.innerHTML='<div class="empty">Não foi possível carregar as novidades agora.</div>';return;}
+  const [first,...rest]=items;
+  b.innerHTML=`<div class="nhero"><img src="${first.image}" alt="${first.title}"><div class="cap"><h2>${first.title}</h2><p>${first.body}</p></div></div>
+    <div class="nlist">${rest.map(n=>`<div class="ncard"><img loading="lazy" src="${n.tile||n.image}" alt="${n.title}"><div class="nb"><h3>${n.title}</h3><p>${n.body}</p></div></div>`).join("")}</div>`;
+}
+/* galeria: arte completa do item + estilos alternativos */
+function galleryHTML(c){
+  const pics=[];
+  for(const r of (c.renders||[])) if(pics.indexOf(r)<0) pics.push(r);
+  if(c.featured&&pics.indexOf(c.featured)<0) pics.push(c.featured);
+  if(c.image&&pics.indexOf(c.image)<0) pics.push(c.image);
+  for(const s of (c.styles||[])) if(s.image&&pics.indexOf(s.image)<0) pics.push(s.image);
+  if(!pics.length) return "";
+  const thumbs=pics.length>1
+    ? `<div class="thumbs">${pics.map((p,i)=>`<button class="thumb ${i===0?"on":""}" onclick="pickPic(this,'${p}')"><img src="${p}" alt="" loading="lazy"></button>`).join("")}</div>`
+    : "";
+  const st=(c.styles&&c.styles.length)
+    ? `<div class="styles"><div class="glabel">Estilos</div><div class="stlist">${c.styles.map(s=>`<button class="st" onclick="pickPic(null,'${s.image}')"><img src="${s.image}" alt="" loading="lazy"><span>${s.name||"Estilo"}</span></button>`).join("")}</div></div>`
+    : "";
+  return `<div class="gal">
+    <div class="glabel">Visual completo</div>
+    <div class="gmain"><img id="galMain" src="${pics[0]}" alt="${c.title}" onerror="this.style.opacity=.3"></div>
+    ${thumbs}${st}</div>`;
+}
+function pickPic(btn,url){
+  const m=document.getElementById("galMain");if(m)m.src=url;
+  document.querySelectorAll(".thumb").forEach(t=>t.classList.remove("on"));
+  if(btn)btn.classList.add("on");
+  else{document.querySelectorAll(".thumb").forEach(t=>{const i=t.querySelector("img");if(i&&i.src===url)t.classList.add("on");});}
+}
+function openModal(uid){
+  const c=CURRENT.find(x=>x.uid===uid);if(!c)return;
+  const col=RCOL[c.rarity]||RCOL.common,tl=TSING[c.type]||(c.type||"Item");
+  const vis=document.getElementById("mvisual");vis.style.setProperty("--rcg",col+"33");
+  const canEmbed=(location.protocol==="http:"||location.protocol==="https:");
+  const gal=galleryHTML(c);
+  if(c.video&&canEmbed){
+    vis.innerHTML=`<div class="vwrap"><div class="vidwrap"><iframe src="https://www.youtube.com/embed/${c.video}?rel=0&modestbranding=1" title="${c.title}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><a class="ytbtn2" href="https://www.youtube.com/watch?v=${c.video}" target="_blank" rel="noopener">abrir no YouTube</a>${gal}</div>`;
+  }else if(c.video){
+    vis.innerHTML=`<div class="vwrap"><a class="ytbtn" href="https://www.youtube.com/watch?v=${c.video}" target="_blank" rel="noopener">${ico("play",15,true)} Ver prévia animada</a>${gal||`<img src="${c.featured||c.image}" alt="${c.title}">`}</div>`;
+  }else if(gal){
+    vis.innerHTML=`<div class="vwrap">${gal}</div>`;
+  }else{
+    vis.innerHTML=`<img src="${c.featured||c.image}" alt="${c.title}">`;
+  }
+  const disc=(c.regularPrice&&c.price&&c.regularPrice>c.price)?`<span class="old">${fmt(c.regularPrice)}</span> <span class="off">-${Math.round((1-c.price/c.regularPrice)*100)}%</span>`:"";
+  const op=outParts(c.outDate);
+  const exp=op?`<div class="mexp">${ico("clock",15)}<span>Fica na loja até <b>${op.dateStr}</b> (Brasília) — <b>${op.rel}</b></span></div>`:"";
+  const setline=c.setText?`<div class="msub">${c.setText}</div>`:(c.subtitle?`<div class="msub">${c.subtitle}</div>`:"");
+  const note=c.video?(canEmbed?`<div class="note">Prévia animada (showcase), tocando aqui como no jogo.</div>`:`<div class="note">Clique no botão pra ver a prévia. Depois de hospedado, o vídeo toca aqui dentro.</div>`):`<div class="note">Prévia estática — este item não tem vídeo de showcase na fonte de dados.</div>`;
+  document.getElementById("mbody").innerHTML=`<h3>${c.title}</h3>${setline}
+    <div class="mrow"><span class="chip" style="color:${col};border-color:${col}66">${RLABEL[c.rarity]||c.rarity}</span><span class="chip">${tl}</span><span class="chip">${c.section}</span></div>
+    <div class="mprice"><img src="https://fortnite-api.com/images/vbuck.png" alt="V-Bucks">${fmt(c.price)} ${disc}</div>
+    ${c.desc?`<div class="mdesc">${c.desc}</div>`:""}${exp}${note}`;
+  document.getElementById("overlay").classList.add("open");
+}
+function closeModal(){document.getElementById("overlay").classList.remove("open");document.getElementById("mvisual").innerHTML="";}
+function updateCountdowns(){
+  resetCountdown();
+  document.querySelectorAll(".cd[data-out]").forEach(el=>{const op=outParts(el.getAttribute("data-out"));if(op){el.innerHTML=ico("clock",13)+" "+op.rel;el.classList.toggle("soon",op.soon);}});
+}
+function setData(cards,date,live){
+  cards.forEach((c,i)=>c.uid=i);CURRENT=cards;
+  const st=document.getElementById("status");
+  st.className="pillstat "+(live?"live":"snap");
+  st.innerHTML=`<span class="d"></span> ${live?"ao vivo":"amostra"}`;
+  const d=date?new Date(date):null,ds=d?d.toLocaleDateString("pt-BR"):"";
+  const nSec=new Set(cards.map(c=>c.section)).size;
+  document.getElementById("sub").textContent=`${cards.length} itens em ${nSec} conjuntos${ds?` · loja de ${ds}`:""}${live?"":" · amostra salva; conecte à internet e clique em Atualizar pra loja completa"}`;
+  buildTypeFilter();render();
+}
+async function loadLive(){
+  const st=document.getElementById("status");st.className="pillstat";st.innerHTML='<span class="spin"></span> atualizando…';
+  try{
+    const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),12000);
+    const r=await fetch("https://fortnite-api.com/v2/shop?language=pt-BR",{signal:ctrl.signal});clearTimeout(t);
+    if(!r.ok)throw 0;
+    const data=await r.json();const cards=extractCards(data);
+    if(!cards.length)throw 0;
+    setData(cards,data.data&&data.data.date,true);
+  }catch(e){setData(SNAPSHOT.items,SNAPSHOT.date,false);}
+  loadNews();
+}
+async function loadNews(){
+  try{
+    const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),12000);
+    const r=await fetch("https://fortnite-api.com/v2/news/br?language=pt-BR",{signal:ctrl.signal});clearTimeout(t);
+    if(!r.ok)throw 0;
+    const data=await r.json();const n=extractNews(data);
+    renderNews(n.length?n:NEWS_SNAP.items);
+  }catch(e){renderNews(NEWS_SNAP.items);}
+}
+function switchView(v){
+  VIEW=v;
+  document.getElementById("view-loja").classList.toggle("hide",v!=="loja");
+  document.getElementById("view-news").classList.toggle("hide",v!=="news");
+  document.getElementById("reset").classList.toggle("hide",v!=="loja");
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.view===v));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)switchView(b.dataset.view);});
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("pills").addEventListener("click",e=>{
+  const b=e.target.closest(".pill");if(!b)return;
+  document.querySelectorAll(".pill").forEach(p=>p.classList.remove("active"));b.classList.add("active");
+  SORT=b.dataset.sort;render();
+});
+document.getElementById("tfilter").addEventListener("click",e=>{
+  const b=e.target.closest(".tchip");if(!b)return;
+  TYPE=b.dataset.t;
+  document.querySelectorAll(".tchip").forEach(c=>c.classList.toggle("on",c.dataset.t===TYPE));
+  render();
+});
+document.getElementById("reload").addEventListener("click",loadLive);
+document.getElementById("close").addEventListener("click",closeModal);
+document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+resetCountdown();setInterval(updateCountdowns,60000);
+renderNews(NEWS_SNAP.items);
+setData(SNAPSHOT.items,SNAPSHOT.date,false);
+loadLive();
+</script>
+</body>
+</html>
