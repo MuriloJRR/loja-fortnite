@@ -6,6 +6,13 @@ on:
   push:
     tags:
       - 'v*'
+  # permite publicar/atualizar a release de uma tag existente manualmente,
+  # pela aba Actions > Publicar release > Run workflow
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag da release (ex: v1.0.0)'
+        required: true
 
 permissions:
   contents: write
@@ -23,7 +30,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git fetch --tags --force
-          TAG="${GITHUB_REF_NAME}"
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
 
           # 1a linha da mensagem da tag = título da release
           TITLE=$(git tag -l --format='%(contents:subject)' "$TAG")
