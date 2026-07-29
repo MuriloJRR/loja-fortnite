@@ -1,6 +1,8 @@
 # Loja do Fortnite
 
-Site que mostra a **loja do dia do Fortnite** em português, organizada por conjuntos como no jogo — com foto de cada item, preço em V-Bucks, validade e prévia animada.
+**Consulte a loja diária do Fortnite sem abrir o jogo.**
+
+Em português, organizada por conjuntos como no jogo — com foto de cada item, preço em V-Bucks, contagem regressiva e prévia animada.
 
 **Acesse:** [fortnite-paticular.netlify.app](https://fortnite-paticular.netlify.app)
 
@@ -9,6 +11,12 @@ Site que mostra a **loja do dia do Fortnite** em português, organizada por conj
 ![Licença](https://img.shields.io/badge/licença-MIT-8b5cf6?style=flat-square)
 
 ---
+
+## Por que existe
+
+Para ver a loja dentro do jogo é preciso abrir o launcher, esperar atualização e carregar o lobby — vários minutos só para conferir se saiu uma skin.
+
+Este site resolve isso em um clique: abre no navegador, no celular ou no PC, e mostra exatamente o que está na loja naquele momento. Sem login, sem instalar nada, sem esperar.
 
 ## O que ele faz
 
