@@ -1,0 +1,40 @@
+name: Publicar release
+
+# Dispara sempre que uma tag começando com "v" for enviada (ex: v1.1.0).
+# O título e as notas da release são lidos da própria mensagem da tag.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Criar release a partir da tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch --tags --force
+          TAG="${GITHUB_REF_NAME}"
+
+          # 1a linha da mensagem da tag = título da release
+          TITLE=$(git tag -l --format='%(contents:subject)' "$TAG")
+          [ -z "$TITLE" ] && TITLE="$TAG"
+
+          # resto da mensagem da tag = corpo das notas
+          git tag -l --format='%(contents:body)' "$TAG" > /tmp/notes.md
+          if [ ! -s /tmp/notes.md ]; then
+            echo "Atualização $TAG" > /tmp/notes.md
+          fi
+
+          gh release create "$TAG" \
+            --title "$TITLE" \
+            --notes-file /tmp/notes.md
