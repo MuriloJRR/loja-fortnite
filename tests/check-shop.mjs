@@ -41,10 +41,17 @@ function extrairCards(data) {
     const renders = [];
     for (const r of (nda.renderImages || [])) if (r && r.image) renders.push(r.image);
 
-    const styles = [];
-    for (const va of (p.variants || []))
-      for (const op of (va.options || []))
-        if (op && op.image) styles.push({ name: op.name || "", image: op.image });
+    const styleGroups = [], styles = [];
+    for (const va of (p.variants || [])) {
+      const ops = [];
+      (va.options || []).forEach((op, i) => {
+        if (op && op.image) ops.push({ name: op.name || ("Opção " + (i + 1)), image: op.image });
+      });
+      if (ops.length) {
+        styleGroups.push({ label: (va.type || va.channel || "").trim(), options: ops, channel: va.channel });
+        for (const o of ops) styles.push(o);
+      }
+    }
 
     const isTrack = !!(p.title && (p.albumArt || p.artist));
     const title = b.name || p.name || p.title || e.devName || "";
@@ -54,7 +61,9 @@ function extrairCards(data) {
       section: L.name || "", sIndex: L.index,
       rarity: (p.rarity && p.rarity.value) || "",
       type: (p.type && p.type.value) || (isTrack ? "song" : (b.name ? "bundle" : "")),
-      image: icon, featured: feat, renders, styles,
+      image: icon, featured: feat, renders, styles, styleGroups,
+      variantes: (p.variants || []).filter(v => (v.options || []).some(o => o && o.image)).length,
+      opcoesNaFonte: (p.variants || []).reduce((n, v) => n + (v.options || []).filter(o => o && o.image).length, 0),
       outDate: e.outDate || "", video: p.showcaseVideo || "",
     });
   }
@@ -114,6 +123,17 @@ for (const c of cards) {
   if (fotos.some(f => amostras.has(f)) && (c.renders.length || c.featured)) amostraVazando++;
   if (fotos.some(f => /\/variants\//.test(f)) && c.renders.length) amostraVazando++;
 }
+
+/* 2b. estilos: nada pode ser perdido nem ficar sem rótulo de grupo */
+let estiloPerdido = 0, grupoSemRotulo = 0;
+for (const c of cards) {
+  const naGaleria = c.styleGroups.reduce((n, g) => n + g.options.length, 0);
+  if (naGaleria !== c.opcoesNaFonte) estiloPerdido++;
+  if (c.styleGroups.length !== c.variantes) estiloPerdido++;
+  for (const g of c.styleGroups) if (!g.label) grupoSemRotulo++;
+}
+if (estiloPerdido) falha(`${estiloPerdido} item(ns) perdendo opções de estilo entre a fonte e a exibição`);
+if (grupoSemRotulo) falha(`${grupoSemRotulo} grupo(s) de estilo sem rótulo — o usuário não saberia o que a opção altera`);
 
 if (semTitulo) falha(`${semTitulo} item(ns) sem nome`);
 if (semPreco) falha(`${semPreco} item(ns) sem preço numérico`);

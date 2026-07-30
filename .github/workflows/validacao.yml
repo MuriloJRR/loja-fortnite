@@ -35,6 +35,22 @@ jobs:
           node --check /tmp/app.js
           echo "JavaScript do site: OK"
 
+          # a arte do item não pode ser ampliada à força (perde nitidez)
+          if grep -Pq '\.gal \.gmain img\{[^}]*(?<![a-z-])height:\s*\d' index.html; then
+            echo "FALHA: a arte do item voltou a ter altura fixa — imagem pequena seria esticada."
+            exit 1
+          fi
+          grep -q 'max-height:250px' index.html || { echo "FALHA: regra max-height ausente na galeria"; exit 1; }
+          echo "Galeria sem ampliação forçada: OK"
+
+          # nenhuma opção de estilo pode ser cortada da lista
+          if grep -Pq 'styles\.slice\(0,\s*\d' index.html; then
+            echo "FALHA: os estilos voltaram a ser cortados — opções ficariam escondidas."
+            exit 1
+          fi
+          grep -q 'styleGroups' index.html || { echo "FALHA: agrupamento de estilos ausente"; exit 1; }
+          echo "Estilos completos e agrupados: OK"
+
           # os dados embutidos (reserva usada quando a API está fora) precisam parsear
           node -e '
             const fs=require("fs");
