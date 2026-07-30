@@ -1,0 +1,49 @@
+name: Validar loja
+
+# Roda todo dia depois do reset da loja (21h de Brasília = 00h UTC),
+# em cada alteração do site e sob demanda pela aba Actions.
+on:
+  schedule:
+    - cron: '30 0 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests/**'
+      - '.github/workflows/validacao.yml'
+  workflow_dispatch:
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Conferir os dados da loja
+        run: node tests/check-shop.mjs
+
+      - name: Conferir se o site continua íntegro
+        run: |
+          test -f index.html || { echo "index.html não encontrado"; exit 1; }
+
+          # o JavaScript do site precisa estar sintaticamente válido
+          awk '/<script>/{f=1;next}/<\/script>/{f=0}f' index.html > /tmp/app.js
+          node --check /tmp/app.js
+          echo "JavaScript do site: OK"
+
+          # os dados embutidos (reserva usada quando a API está fora) precisam parsear
+          node -e '
+            const fs=require("fs");
+            const s=fs.readFileSync("/tmp/app.js","utf8");
+            const m=s.match(/const SNAPSHOT = (\{[\s\S]*?\]\});/);
+            if(!m){ console.error("dados de reserva não encontrados no site"); process.exit(1); }
+            const o=JSON.parse(m[1]);
+            if(!o.items || !o.items.length){ console.error("dados de reserva vazios"); process.exit(1); }
+            const semFoto=o.items.filter(i=>!i.image).length;
+            if(semFoto){ console.error(semFoto+" itens de reserva sem imagem"); process.exit(1); }
+            console.log("Dados de reserva: OK ("+o.items.length+" itens)");
+          '
