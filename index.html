@@ -426,7 +426,13 @@ function render(){
     (c.title.toLowerCase().includes(q)||(c.setText||"").toLowerCase().includes(q)||(c.section||"").toLowerCase().includes(q)));
   const groups=new Map();
   for(const c of list){const key=c.sIndex+"||"+c.section;if(!groups.has(key))groups.set(key,{sIndex:c.sIndex,name:c.section,items:[]});groups.get(key).items.push(c);}
-  const secs=[...groups.values()].sort((a,b)=>a.sIndex-b.sIndex);
+  /* seções de música sempre no fim — cosméticos primeiro */
+  const soMusica=s=>s.items.length>0&&s.items.every(i=>i.type==="song"||i.type==="music");
+  const secs=[...groups.values()].sort((a,b)=>{
+    const ma=soMusica(a)?1:0, mb=soMusica(b)?1:0;
+    if(ma!==mb) return ma-mb;
+    return a.sIndex-b.sIndex;
+  });
   const sorter={"preco-desc":(a,b)=>(b.price||0)-(a.price||0),"preco-asc":(a,b)=>(a.price||0)-(b.price||0),"nome":(a,b)=>a.title.localeCompare(b.title,"pt-BR")}[SORT];
   const board=document.getElementById("board");
   if(!secs.length){board.innerHTML='<div class="empty">Nenhum item encontrado com esse filtro.</div>';return;}

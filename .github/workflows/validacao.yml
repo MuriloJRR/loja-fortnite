@@ -51,6 +51,10 @@ jobs:
           grep -q 'styleGroups' index.html || { echo "FALHA: agrupamento de estilos ausente"; exit 1; }
           echo "Estilos completos e agrupados: OK"
 
+          # seções de música precisam continuar indo para o fim da lista
+          grep -q 'soMusica' index.html || { echo "FALHA: regra de musica no fim ausente"; exit 1; }
+          echo "Musica no fim da loja: OK"
+
           # os dados embutidos (reserva usada quando a API está fora) precisam parsear
           node -e '
             const fs=require("fs");
