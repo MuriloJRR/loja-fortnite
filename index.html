@@ -316,6 +316,7 @@ const TICO={outfit:"outfit",backpack:"backpack",pickaxe:"pickaxe",emote:"emote",
   banner:"medal",emoji:"smile",contrail:"spark",cosmeticvarianttoken:"mask"};
 
 let CURRENT=[],SORT="destaque",TYPE="all",VIEW="loja";
+let BODYPIC="";   /* foto do personagem de corpo inteiro do item aberto */
 
 function extractCards(data){
   const entries=(data&&data.data&&data.data.entries)||[];const out=[];
@@ -447,6 +448,8 @@ function galleryHTML(c){
   if(isPack) for(const it of c.incl) add(it.image,it.name);
   if(!pics.length&&c.styles&&c.styles.length) add(c.styles[0].image,"Estilo");
   if(!pics.length) return "";
+  /* o ícone do item é o render do personagem de corpo inteiro — destino do clique nos estilos */
+  BODYPIC=c.image||c.featured||pics[0].url;
   const thumbs=pics.length>1
     ? `<div class="thumbs">${pics.map((p,i)=>{
         const isItem=isPack&&(c.incl||[]).some(x=>x.image===p.url);
@@ -463,13 +466,18 @@ function galleryHTML(c){
     ${thumbs}${hint}${st}</div>`;
 }
 
-/* estilo: só troca a arte principal se a imagem for um render de verdade.
-   quando é amostra de cor, apenas marca o estilo escolhido. */
+/* estilo: se a imagem do estilo for um render de verdade, mostra ela.
+   se for só amostra de cor, leva a vista para a foto do personagem de corpo inteiro. */
 function pickStyle(btn,url){
   document.querySelectorAll(".st").forEach(s=>s.classList.remove("on"));
   if(btn)btn.classList.add("on");
+  const corpo=()=>{ if(BODYPIC) pickPic(null,BODYPIC); };
   const probe=new Image();
-  probe.onload=()=>{ if(probe.naturalWidth>300&&probe.naturalHeight>300) pickPic(null,url); };
+  probe.onload=()=>{
+    if(probe.naturalWidth>300&&probe.naturalHeight>300) pickPic(null,url);
+    else corpo();
+  };
+  probe.onerror=corpo;
   probe.src=url;
 }
 /* imagem pequena (amostra de cor) recebe tratamento de painel, não de foto */
